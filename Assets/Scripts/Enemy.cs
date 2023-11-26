@@ -5,7 +5,8 @@ public class Enemy : MonoBehaviour {
 
 	public float startSpeed = 10f;
 
-	[HideInInspector]
+	public Constants.ElementTypes elementType;
+	
 	public float speed;
 
 	public float startHealth = 100;
@@ -13,7 +14,15 @@ public class Enemy : MonoBehaviour {
 
 	public int worth = 50;
 
-	public GameObject deathEffect;
+	public Material materialFire;
+	public Material materialWater;
+	public Material materialGrass;
+
+	public GameObject deathEffectFire;
+	public GameObject deathEffectWater;
+	public GameObject deathEffectGrass;
+
+	private GameObject deathEffect;
 
 	[Header("Unity Stuff")]
 	public Image healthBar;
@@ -24,11 +33,38 @@ public class Enemy : MonoBehaviour {
 	{
 		speed = startSpeed;
 		health = startHealth;
+		ChangeType(elementType);
 	}
 
-	public void TakeDamage (float amount)
+	public void TakeDamage (float amount, Constants.ElementTypes weaponElement)
 	{
-		health -= amount;
+		switch (weaponElement)
+		{
+			case Constants.ElementTypes.Fire:
+				if (elementType == Constants.ElementTypes.Water) {
+					health -= amount / 4;
+				}
+				if (elementType == Constants.ElementTypes.Grass) {
+					health -= amount;
+				}
+				break;
+			case Constants.ElementTypes.Water:
+				if (elementType == Constants.ElementTypes.Grass) {
+					health -= amount / 4;
+				}
+				if (elementType == Constants.ElementTypes.Fire) {
+					health -= amount;
+				}
+				break;
+			case Constants.ElementTypes.Grass:
+				if (elementType == Constants.ElementTypes.Fire) {
+					health -= amount / 4;
+				}
+				if (elementType == Constants.ElementTypes.Water) {
+					health -= amount;
+				}
+				break;
+		}
 
 		healthBar.fillAmount = health / startHealth;
 
@@ -36,6 +72,27 @@ public class Enemy : MonoBehaviour {
 		{
 			Die();
 		}
+	}
+
+	public void ChangeType (Constants.ElementTypes newType) 
+	{
+		switch (newType)
+		{
+			case Constants.ElementTypes.Fire:
+				gameObject.GetComponent<Renderer>().material = materialFire;
+				deathEffect = deathEffectFire;
+				break;
+			case Constants.ElementTypes.Water:
+				gameObject.GetComponent<Renderer>().material = materialWater;
+				deathEffect = deathEffectWater;
+				break;
+			case Constants.ElementTypes.Grass:
+				gameObject.GetComponent<Renderer>().material = materialGrass;
+				deathEffect = deathEffectGrass;
+				break;
+		}
+
+		elementType = newType;
 	}
 
 	public void Slow (float pct)

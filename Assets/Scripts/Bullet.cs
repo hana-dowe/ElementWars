@@ -4,6 +4,9 @@ public class Bullet : MonoBehaviour {
 
 	private Transform target;
 
+	public Constants.ElementTypes elementType;
+	public Constants.WeaponTypes weaponType;
+
 	public float speed = 70f;
 
 	public int damage = 50;
@@ -73,7 +76,15 @@ public class Bullet : MonoBehaviour {
 
 		if (e != null)
 		{
-			e.TakeDamage(damage);
+			switch (weaponType)
+			{
+				case Constants.WeaponTypes.Attacker:
+					e.TakeDamage(damage, elementType);
+					break;
+				case Constants.WeaponTypes.ElementChanger:
+					e.ChangeType(elementType);
+					break;
+			}
 		}
 	}
 

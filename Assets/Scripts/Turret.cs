@@ -8,6 +8,7 @@ public class Turret : MonoBehaviour {
 
 	[Header("General")]
 
+	public Constants.ElementTypes elementType;
 	public float range = 15f;
 
 	[Header("Use Bullets (default)")]
@@ -44,13 +45,14 @@ public class Turret : MonoBehaviour {
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
 		float shortestDistance = Mathf.Infinity;
 		GameObject nearestEnemy = null;
-		foreach (GameObject enemy in enemies)
+		foreach (GameObject enemyObject in enemies)
 		{
-			float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-			if (distanceToEnemy < shortestDistance)
+			float distanceToEnemy = Vector3.Distance(transform.position, enemyObject.transform.position);
+			Constants.ElementTypes enemyType = enemyObject.GetComponent<Enemy>().elementType;
+			if (distanceToEnemy < shortestDistance && enemyType != elementType )
 			{
 				shortestDistance = distanceToEnemy;
-				nearestEnemy = enemy;
+				nearestEnemy = enemyObject;
 			}
 		}
 
@@ -84,19 +86,15 @@ public class Turret : MonoBehaviour {
 
 		LockOnTarget();
 
-		if (useLaser)
+		
+		if (fireCountdown <= 0f)
 		{
-			Laser();
-		} else
-		{
-			if (fireCountdown <= 0f)
-			{
-				Shoot();
-				fireCountdown = 1f / fireRate;
-			}
-
-			fireCountdown -= Time.deltaTime;
+			Shoot();
+			fireCountdown = 1f / fireRate;
 		}
+
+		fireCountdown -= Time.deltaTime;
+		
 
 	}
 
@@ -108,27 +106,27 @@ public class Turret : MonoBehaviour {
 		partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 	}
 
-	void Laser ()
-	{
-		targetEnemy.TakeDamage(damageOverTime * Time.deltaTime);
-		targetEnemy.Slow(slowAmount);
+	// void Laser ()
+	// {
+	// 	targetEnemy.TakeDamage(damageOverTime * Time.deltaTime);
+	// 	targetEnemy.Slow(slowAmount);
 
-		if (!lineRenderer.enabled)
-		{
-			lineRenderer.enabled = true;
-			impactEffect.Play();
-			impactLight.enabled = true;
-		}
+	// 	if (!lineRenderer.enabled)
+	// 	{
+	// 		lineRenderer.enabled = true;
+	// 		impactEffect.Play();
+	// 		impactLight.enabled = true;
+	// 	}
 
-		lineRenderer.SetPosition(0, firePoint.position);
-		lineRenderer.SetPosition(1, target.position);
+	// 	lineRenderer.SetPosition(0, firePoint.position);
+	// 	lineRenderer.SetPosition(1, target.position);
 
-		Vector3 dir = firePoint.position - target.position;
+	// 	Vector3 dir = firePoint.position - target.position;
 
-		impactEffect.transform.position = target.position + dir.normalized;
+	// 	impactEffect.transform.position = target.position + dir.normalized;
 
-		impactEffect.transform.rotation = Quaternion.LookRotation(dir);
-	}
+	// 	impactEffect.transform.rotation = Quaternion.LookRotation(dir);
+	// }
 
 	void Shoot ()
 	{
