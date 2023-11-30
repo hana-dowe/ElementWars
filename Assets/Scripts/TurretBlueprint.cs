@@ -4,6 +4,8 @@ using System.Collections;
 [System.Serializable]
 public class TurretBlueprint {
 
+	public Constants.ElementTypes elementType;
+
 	public GameObject prefab;
 	public int cost;
 

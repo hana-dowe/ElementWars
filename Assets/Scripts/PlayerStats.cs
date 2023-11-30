@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerStats : MonoBehaviour {
 
-	public static int Money;
-	public int startMoney = 400;
+	public static Dictionary<Constants.ElementTypes, int> Money;
+	public int startMoney = 20;
 
 	public static int Lives;
 	public int startLives = 20;
@@ -13,7 +14,12 @@ public class PlayerStats : MonoBehaviour {
 
 	void Start ()
 	{
-		Money = startMoney;
+		Money = new Dictionary<Constants.ElementTypes, int>(){
+			{Constants.ElementTypes.Fire, startMoney},
+			{Constants.ElementTypes.Water, startMoney},
+			{Constants.ElementTypes.Grass, startMoney},
+		};
+
 		Lives = startLives;
 
 		Rounds = 0;
