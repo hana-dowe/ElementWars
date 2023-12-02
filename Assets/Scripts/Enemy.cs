@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour {
 		{
 			case Constants.ElementTypes.Fire:
 				if (elementType == Constants.ElementTypes.Water) {
-					health -= amount / 4;
+					health -= (int) amount / 4;
 				}
 				if (elementType == Constants.ElementTypes.Grass) {
 					health -= amount;
@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour {
 				break;
 			case Constants.ElementTypes.Water:
 				if (elementType == Constants.ElementTypes.Grass) {
-					health -= amount / 4;
+					health -= (int) amount / 4;
 				}
 				if (elementType == Constants.ElementTypes.Fire) {
 					health -= amount;
@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour {
 				break;
 			case Constants.ElementTypes.Grass:
 				if (elementType == Constants.ElementTypes.Fire) {
-					health -= amount / 4;
+					health -= (int) amount / 4;
 				}
 				if (elementType == Constants.ElementTypes.Water) {
 					health -= amount;
