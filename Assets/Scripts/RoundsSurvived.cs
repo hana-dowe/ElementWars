@@ -6,10 +6,12 @@ using UnityEngine.UI;
 public class RoundsSurvived : MonoBehaviour {
 
 	public Text roundsText;
+	public Text highscoreText;
 
 	void OnEnable()
 	{
 		StartCoroutine(AnimateText());
+		highscoreText.text = "High Score: " + PlayerPrefs.GetInt("HighScore");
 	}
 
 	IEnumerator AnimateText ()

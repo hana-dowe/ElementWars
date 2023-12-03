@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Shop : MonoBehaviour {
 
@@ -20,8 +21,12 @@ public class Shop : MonoBehaviour {
 	public Sprite elemChangerGrass;
 
 	public Button fireButton; 
+	public TMP_Text fireText;
 	public Button waterButton;
+	public TMP_Text waterText;
 	public Button grassButton;
+	public TMP_Text grassText;
+
 
 	public Image attackerImage;
 	public Image elemChangerImage;
@@ -35,6 +40,7 @@ public class Shop : MonoBehaviour {
 	{
 		buildManager = BuildManager.instance;
 		SelectElem(Constants.ElementTypes.Fire);
+		SelectAttacker();
 	}
 
 	private void SelectElem(Constants.ElementTypes element) 
@@ -43,6 +49,10 @@ public class Shop : MonoBehaviour {
 		waterButton.interactable = element != Constants.ElementTypes.Water;
 		grassButton.interactable = element != Constants.ElementTypes.Grass;
 		
+		fireText.fontStyle = element == Constants.ElementTypes.Fire ? FontStyles.Bold : FontStyles.Normal;
+		waterText.fontStyle = element == Constants.ElementTypes.Water ? FontStyles.Bold : FontStyles.Normal;
+		grassText.fontStyle = element == Constants.ElementTypes.Grass ? FontStyles.Bold : FontStyles.Normal;
+
 		switch (element)
 		{
 			case Constants.ElementTypes.Fire:
@@ -87,12 +97,16 @@ public class Shop : MonoBehaviour {
 	public void SelectAttacker ()
 	{
 		currWeaponType = Constants.WeaponTypes.Attacker;
+		attackerImage.color = new Color32(255, 255, 255, 255);
+		elemChangerImage.color = new Color32(255, 255, 255, 100);
 		SetBluePrint(currElement, currWeaponType);
 	}
 
 	public void SelectElementChanger ()
 	{
 		currWeaponType = Constants.WeaponTypes.ElementChanger;
+		attackerImage.color = new Color32(255, 255, 255, 100);
+		elemChangerImage.color = new Color32(255, 255, 255, 255);
 		SetBluePrint(currElement, currWeaponType);
 	}
 

@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour {
 
 		if (PlayerStats.Lives <= 0)
 		{
+			if (PlayerPrefs.GetInt("HighScore") < PlayerStats.Rounds){
+				PlayerPrefs.SetInt("HighScore", PlayerStats.Rounds);
+			}
 			EndGame();
 		}
 	}

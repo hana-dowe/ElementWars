@@ -12,7 +12,8 @@ public class Node : MonoBehaviour {
 	[HideInInspector]
 	public TurretBlueprint turretBlueprint;
 	[HideInInspector]
-	public bool isUpgraded = false;
+	public bool isUpgradedOnce = false;
+	public bool isUpgradedTwice = false;
 
 	private Renderer rend;
 	private Color startColor;
@@ -72,25 +73,50 @@ public class Node : MonoBehaviour {
 
 	public void UpgradeTurret ()
 	{
-		if (PlayerStats.Money[turretBlueprint.elementType] < turretBlueprint.upgrade1Cost)
+		if (!isUpgradedOnce) 
 		{
-			Debug.Log("Not enough money to upgrade that!");
-			return;
-		}
+			if (PlayerStats.Money[turretBlueprint.elementType] < turretBlueprint.upgrade1Cost)
+			{
+				Debug.Log("Not enough money to upgrade that!");
+				return;
+			}
 
-		PlayerStats.Money[turretBlueprint.elementType] -= turretBlueprint.upgrade1Cost;
+			PlayerStats.Money[turretBlueprint.elementType] -= turretBlueprint.upgrade1Cost;
 
-		//Get rid of the old turret
-		Destroy(turret);
+			//Get rid of the old turret
+			Destroy(turret);
 
-		//Build a new one
-		GameObject _turret = (GameObject)Instantiate(turretBlueprint.upgrade1Prefab, GetBuildPosition(), Quaternion.identity);
-		turret = _turret;
+			//Build a new one
+			GameObject _turret = (GameObject)Instantiate(turretBlueprint.upgrade1Prefab, GetBuildPosition(), Quaternion.identity);
+			turret = _turret;
 
-		GameObject effect = (GameObject)Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
-		Destroy(effect, 5f);
+			GameObject effect = (GameObject)Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
+			Destroy(effect, 5f);
 
-		isUpgraded = true;
+			isUpgradedOnce = true;
+		} 
+		else if (!isUpgradedTwice) 
+		{
+			if (PlayerStats.Money[turretBlueprint.elementType] < turretBlueprint.upgrade2Cost)
+			{
+				Debug.Log("Not enough money to upgrade that!");
+				return;
+			}
+
+			PlayerStats.Money[turretBlueprint.elementType] -= turretBlueprint.upgrade2Cost;
+
+			//Get rid of the old turret
+			Destroy(turret);
+
+			//Build a new one
+			GameObject _turret = (GameObject)Instantiate(turretBlueprint.upgrade2Prefab, GetBuildPosition(), Quaternion.identity);
+			turret = _turret;
+
+			GameObject effect = (GameObject)Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
+			Destroy(effect, 5f);
+
+			isUpgradedTwice = true;
+		}		
 
 		Debug.Log("Turret upgraded!");
 	}
