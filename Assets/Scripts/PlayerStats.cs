@@ -7,6 +7,8 @@ public class PlayerStats : MonoBehaviour {
 	public static Dictionary<Constants.ElementTypes, int> Money;
 	public int startMoney = 20;
 
+	public static int points;
+
 	public static int Lives;
 	public int startLives = 20;
 
@@ -19,6 +21,8 @@ public class PlayerStats : MonoBehaviour {
 			{Constants.ElementTypes.Water, startMoney},
 			{Constants.ElementTypes.Grass, startMoney},
 		};
+
+		points = 0;
 
 		Lives = startLives;
 

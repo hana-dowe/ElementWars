@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour {
 
 	void Start ()
 	{
-		speed = startSpeed;
+		speed = startSpeed + PlayerStats.Rounds;
 		health = startHealth;
 		ChangeType(elementType);
 	}
